@@ -12,7 +12,7 @@ complex_vector FFT(complex_vector& input) {
 	if (n == 1) {
 		return input;
 	}
-	auto omega = std::polar(1.0, 2.0 * M_PI / n);
+	auto omega = std::polar(1.0, -2.0 * M_PI / n);
 
 	complex_vector even_part;
 	complex_vector odd_part;
@@ -25,10 +25,11 @@ complex_vector FFT(complex_vector& input) {
 
 	complex_vector y(n);
 
-	for (int i = 0; i < n / 2; i++) {
-		auto exp = std::pow(omega, static_cast<double>(i));
+	std::complex<double> exp = 1;
+	for (int i = 0; i < n / 2; i++) {		
 		y[i]       = y_even[i] + exp * y_odd[i];
 		y[i + n/2] = y_even[i] - exp * y_odd[i];
+		exp = exp * omega;
 	}
 	return y;
 }
